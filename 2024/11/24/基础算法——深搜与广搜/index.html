@@ -195,6 +195,36 @@
         <h1 id="深搜"><a href="#深搜" class="headerlink" title="深搜"></a>深搜</h1><p>[TOC]</p>
 <hr>
 <p>个人理解深搜更像是一种特殊的递归来处理一个支点不同的选择方案(就像树)，而深搜大多数都是用到栈来模拟整个过程</p>
+<blockquote>
+<p>给出一个深搜的框架</p>
+<pre><code class="c++">递归回溯法算法框架[一]
+int Search(int k)
+&#123;
+　for (i=1;i&lt;=算符种数;i++)
+　　if (满足条件)
+　　   &#123;
+　　　　保存结果
+　　　　if (到目的地) 输出解;
+　　　           else Search(k+1);
+　　　　恢复：保存结果之前的状态&#123;回溯一步&#125;
+　 　  &#125;
+&#125;
+递归回溯法算法框架[二]
+int Search(int k)
+　&#123;
+　  if  (到目的地) 输出解;
+　　　else
+　　　　for (i=1;i&lt;=算符种数;i++)
+　　　　　if  (满足条件) 
+　　　　　　　&#123;
+　　　　　　　　保存结果;
+　　　                  Search(k+1);
+　　　　　　　　恢复：保存结果之前的状态&#123;回溯一步&#125;
+　　　　　　　&#125;
+　&#125;
+</code></pre>
+</blockquote>
+<hr>
 <h2 id="1-LETTERS"><a href="#1-LETTERS" class="headerlink" title="1.LETTERS"></a>1.LETTERS</h2><blockquote>
 <p>【题目描述】</p>
 <p>给出一个row×col的大写字母矩阵，一开始的位置为左上角，</p>
@@ -614,7 +644,7 @@ int main()
     return 0;
 &#125;
 </code></pre>
-<h2 id="4-迷宫"><a href="#4-迷宫" class="headerlink" title="4.迷宫"></a>4.迷宫</h2><blockquote>
+<h2 id="4-迷宫"><a href="#4-迷宫" class="headerlink" title="4. 迷宫"></a>4. 迷宫</h2><blockquote>
 <p>【题目描述】</p>
 <p>一天Extense在森林里探险的时候不小心走入了一个迷宫，迷宫可以看成是由n×n的格点组成，</p>
 <p>每个格点只有2种状态，.和#，前者表示可以通行后者表示不能通行。</p>
@@ -649,7 +679,262 @@ int main()
 </blockquote>
 <blockquote>
 <p>解题思路:</p>
+<p>因为这题只需要求出是否能到达终点，所以只需要设置一个flag来确定是否抵达终点，甚至这题可以不需要回溯，只用搜索到最终情况便可以输出结果进入下一层输入了</p>
 </blockquote>
+<p>解题代码：</p>
+<pre><code class="c++">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+int a[100][100],k,n;
+int ha,hb,la,lb;
+int dir1[4]= &#123;0,0,1,-1&#125;;
+int dir2[4]= &#123;1,-1,0,0&#125;;
+char maze[100][100];
+bool flag;
+void search(int x,int y)
+&#123;
+    if(x==hb&amp;&amp;y==lb)
+    &#123;
+        flag=true;
+        return;
+    &#125;
+    for(int i=0; i&lt;4; i++)
+    &#123;
+        int sx=x+dir1[i];
+        int sy=y+dir2[i];
+        if(sx&lt;0||sx&gt;=n||sy&lt;0||sy&gt;=n)
+            continue;
+        if(a[sx][sy])
+            continue;
+        if(maze[sx][sy]==&#39;#&#39;)
+            continue;
+        a[sx][sy]=1;
+        search(sx,sy);
+    &#125;
+    return;
+&#125;
+int main()
+&#123;
+    cin&gt;&gt;k;
+    for(int i=0; i&lt;k; i++)
+    &#123;
+        cin&gt;&gt;n;
+        for(int j=0; j&lt;n; j++)
+            for(int l=0; l&lt;n; l++)
+                cin&gt;&gt;maze[j][l];
+        cin&gt;&gt;ha&gt;&gt;la&gt;&gt;hb&gt;&gt;lb;
+        if(maze[ha][la]==&#39;#&#39;||maze[hb][lb]==&#39;#&#39;)
+        &#123;
+            cout&lt;&lt;&quot;NO\n&quot;;
+            continue;
+        &#125;
+        a[ha][la]=1;
+        memset(a,0,sizeof(a));
+        flag=false;
+        search(ha,la);
+        cout&lt;&lt;(flag?&quot;YES&quot;:&quot;NO&quot;)&lt;&lt;endl;
+    &#125;
+    return 0;
+&#125;
+</code></pre>
+<hr>
+<h2 id="5-走迷宫"><a href="#5-走迷宫" class="headerlink" title="5. 走迷宫"></a>5. 走迷宫</h2><blockquote>
+<p>【题目描述】</p>
+<p>给定一个 n×m的二维整数数组，用来表示一个迷宫，数组中只包含 0或 1，</p>
+<p>其中 0表示可以走的路，1表示不可通过的墙壁。</p>
+<p>最初，有一个人位于左上角 (1,1)处，已知该人每次可以向上、下、左、右任意一个方向移动一个位置。</p>
+<p>请问，该人从左上角移动至右下角 (n,m)处，至少需要移动多少次。</p>
+<p>数据保证 (1,1)处和 (n,m)处的数字为 0，且一定至少存在一条通路。</p>
+<p>【输入格式】</p>
+<p>第一行包含两个整数 n和 m。</p>
+<p>接下来 n行，每行包含 m个整数（0或 1），表示完整的二维数组迷宫。</p>
+<p>【输出格式】</p>
+<p>输出一个整数，表示从左上角移动至右下角的最少移动次数。</p>
+<p>【数据范围】</p>
+<p>1≤n,m≤100</p>
+<p>【输入样例】</p>
+<p>5 5</p>
+<p>0 1 0 0 0</p>
+<p>0 1 0 1 0</p>
+<p>0 0 0 0 0</p>
+<p>0 1 1 1 0</p>
+<p>0 0 0 1 0</p>
+<p>输出样例：</p>
+<p>8</p>
+</blockquote>
+<p>解题思路：</p>
+<blockquote>
+<p>这是一道典型的深搜题，思路就是对每个节点探索四个方向的可能性</p>
+<p>深搜使用队列</p>
+</blockquote>
+<p>解题代码:</p>
+<blockquote>
+<p>算法(一)-数组模拟队列：</p>
+</blockquote>
+<pre><code class="c++">#include&lt;iostream&gt;
+#include&lt;cstring&gt;
+#include&lt;algorithm&gt;
+using namespace std;
+const int N = 110; 
+typedef pair&lt;int, int&gt; PII;
+int n, m;
+int g[N][N];//存放地图
+int d[N][N];//存 每一个点到起点的距离
+PII q[N * N];//手写队列
+int bfs()
+&#123;
+    int hh = 0, tt = 0;
+    q[0] = &#123;0, 0&#125;;
+
+    memset(d, - 1, sizeof d);//距离初始化为- 1表示没有走过
+
+    d[0][0] = 0;//表示起点走过了
+
+    int dx[4] = &#123;-1, 0, 1, 0&#125;, dy[4] = &#123;0, 1, 0, -1&#125;;//x 方向的向量和 y 方向的向量组成的上、右、下、左
+
+    while(hh &lt;= tt)//队列不空
+    &#123;
+        PII t = q[hh ++ ];//取队头元素
+
+        for(int i = 0; i &lt; 4; i ++ )//枚举4个方向
+        &#123;
+            int x = t.first + dx[i], y = t.second + dy[i];//x表示沿着此方向走会走到哪个点
+            if(x &gt;= 0 &amp;&amp; x &lt; n &amp;&amp; y &gt;= 0 &amp;&amp; y &lt; m &amp;&amp; g[x][y] == 0 &amp;&amp; d[x][y] == -1)//在边界内 并且是空地可以走 且之前没有走过
+            &#123;
+                d[x][y] = d[t.first][t.second] + 1;//到起点的距离
+                q[ ++ tt ] = &#123;x, y&#125;;//新坐标入队
+            &#125;
+        &#125;
+    &#125;
+    return d[n - 1][m - 1]; //输出右下角点距起点的距离即可
+&#125;
+int main() 
+&#123;
+    cin &gt;&gt; n &gt;&gt; m;
+    for(int i = 0; i &lt; n; i ++ )
+        for(int j = 0; j &lt; m; j ++ )
+            cin &gt;&gt; g[i][j];
+
+    cout &lt;&lt; bfs() &lt;&lt; endl;
+
+    return 0;
+&#125;
+</code></pre>
+<p>算法(二)-使用队列:</p>
+<pre><code class="c++">#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+#include &lt;queue&gt;
+
+using namespace std;
+
+const int N = 110;
+
+typedef pair&lt;int, int&gt; PII;
+
+int n, m;
+int g[N][N], d[N][N];
+
+int bfs()
+&#123;
+    queue&lt; pair&lt;int, int&gt; &gt; q;
+
+    q.push(&#123;0, 0&#125;);
+
+    memset(d, -1, sizeof(d));
+
+    d[0][0] = 0;
+
+
+    int dx[4] = &#123;-1, 0, 1, 0&#125;, dy[4] = &#123;0, 1, 0, -1&#125;;
+
+    while (q.size())//队列不为空
+    &#123;
+        PII t = q.front();//取队头元素
+
+        q.pop();//出队
+
+        for (int i = 0; i &lt; 4; i++)
+        &#123;
+            int x = t.first + dx[i], y = t.second + dy[i];
+
+            if (x &gt;= 0 &amp;&amp; x &lt; n &amp;&amp; y &gt;= 0 &amp;&amp; y &lt; m &amp;&amp; g[x][y] == 0 &amp;&amp; d[x][y] == -1)
+            &#123;
+                d[x][y] = d[t.first][t.second] + 1;//当前点到起点的距离
+                q.push(&#123;x, y&#125;);//将新坐标入队
+            &#125;
+        &#125;
+    &#125;
+
+    return d[n - 1][m -1];
+&#125;
+
+int main()
+&#123;
+    cin &gt;&gt; n &gt;&gt; m;
+    for (int i = 0; i &lt; n; i++)
+        for (int j = 0; j &lt; m; j++)
+            cin &gt;&gt; g[i][j];
+
+    cout &lt;&lt; bfs() &lt;&lt; endl;
+
+    return 0;
+&#125;
+</code></pre>
+<p>算法(三)-打印路线类：</p>
+<pre><code class="c++">#include&lt;iostream&gt;
+#include&lt;cstring&gt;
+#include&lt;algorithm&gt;
+using namespace std;
+const int N = 110;
+typedef pair&lt;int, int&gt; PII;
+PII q[N*N],Prev[N][N];
+int g[N][N], d[N][N];
+int n, m;
+int bfs()
+&#123;
+    int hh = 0, tt = 0;
+    q[0] = &#123;0, 0&#125;;
+    memset(d, -1, sizeof d);
+
+    int dx[4] = &#123;-1, 0, 1, 0&#125;, dy[4] = &#123;0, 1, 0, -1&#125;;
+    d[0][0] = 0;
+    while(hh &lt;= tt)
+    &#123;
+        PII t = q[hh ++ ];
+        for(int i = 0; i &lt; 4; i ++ )
+        &#123;
+            int x = dx[i] + t.first, y = t.second + dy[i];
+
+            if(x &gt;= 0 &amp;&amp; x &lt; n &amp;&amp; y &gt;= 0 &amp;&amp; y &lt; m &amp;&amp; g[x][y] == 0 &amp;&amp; d[x][y] == -1)
+            &#123;
+                d[x][y] = d[t.first][t.second] + 1;
+                Prev[x][y] = t;
+                q[++ tt] = &#123;x, y&#125;;
+            &#125;
+        &#125;
+    &#125;
+    int x = n - 1, y = m - 1;
+    while(x || y)//有一个不d等于0
+    &#123;
+        cout &lt;&lt; x &lt;&lt; &#39; &#39; &lt;&lt; y &lt;&lt; endl;
+        PII t = Prev[x][y];
+        x = t.first, y = t.second;
+    &#125;
+
+    return d[n - 1][m - 1];
+&#125;
+int main()
+&#123;
+    cin &gt;&gt; n &gt;&gt; m;
+    for(int i = 0; i &lt; n; i ++ )
+        for(int j = 0; j &lt; m;j ++)
+            cin &gt;&gt; g[i][j];
+
+    cout &lt;&lt; bfs() &lt;&lt; endl;
+
+    return 0;
+&#125;
+</code></pre>
+<hr>
 
     </div>
     
