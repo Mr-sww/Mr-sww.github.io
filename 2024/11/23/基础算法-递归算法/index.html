@@ -1,0 +1,461 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>基础算法——递归算法 | SWe1L</title>
+    <meta name="author" content="Mr-SW" />
+    <meta name="description" content="Hi!这是阿伟先生的个人博客，我会在这里分享我的刷题心得，还会分享一些生活趣事" />
+    <meta name="keywords" content="" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <link rel="icon" href="/images/a.jpg" />
+    <link rel="preconnect" href="https://s4.zstatic.net" />
+<script src="https://s4.zstatic.net/ajax/libs/vue/3.3.7/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.cn" />
+<link rel="preconnect" href="https://fonts.gstatic.cn" crossorigin />
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.cn/css2?family=Fira+Code:wght@400;500;600;700&family=Lexend:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap"
+/>
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.alicdn.com/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://s4.zstatic.net/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <div id="layout">
+        <transition name="fade">
+            <div id="loading" v-show="loading">
+                <div id="loading-circle">
+                    <h2>LOADING</h2>
+                    <p>加载过慢请开启缓存 浏览器默认开启</p>
+                    <img src="/images/loading.gif" />
+                </div>
+            </div>
+        </transition>
+        <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>SWE1L</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;主页</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;关于</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;文档</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;分类</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;标签</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;SWE1L</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">主页</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">关于</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">文档</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">分类</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">标签</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+        <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+            <div class="article">
+    <div>
+        <h1>基础算法——递归算法</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2024/11/23
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/%E9%98%BF%E4%BC%9F/" style="color: #03a9f4">
+                    阿伟
+                </a>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/tags/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/" style="color: #ff7d73">
+                    基础算法
+                </a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <h1 id="递归算法"><a href="#递归算法" class="headerlink" title="递归算法"></a>递归算法</h1><p>[TOC]</p>
+<hr>
+<h2 id="1-【例4-5】集合的划分"><a href="#1-【例4-5】集合的划分" class="headerlink" title="1.【例4.5】集合的划分"></a>1.【例4.5】集合的划分</h2><blockquote>
+<p><strong>【题目描述】<br>设S是一个具有n<br>个元素的集合，S＝⟨a1，a2，……，an⟩，现将S划分成k个满足下列条件的子集合S1，S2，……，Sk，且满足：<br>1．Si≠∅<br>2．Si∩Sj＝∅(1≤i，j≤k，i≠j)<br>3．S1∪S2∪S3∪…∪Sk＝S<br>则称S1，S2，……，Sk是集合S的一个划分。它相当于把S集合中的n个元素a1，a2，……，an放入k个(0＜k≤n＜30)无标号的盒子中，使得没有一个盒子为空。请你确定n个元素a1，a2，……，an 放入k个无标号盒子中去的划分数S(n,k)。<br>【输入】<br>给出n和k。<br>【输出】<br>n个元素a1，a2，……，an放入k个无标号盒子中去的划分数S(n,k)。<br>【输入样例】<br>10 6<br>【输出样例】<br>22827</strong></p>
+</blockquote>
+<blockquote>
+<p>【解题思路】<br>题目说白了就是 “把n个元素的数组分成k份，有多少种分法”<br><strong>递归</strong><br>分几种情况</p>
+<ul>
+<li>n &lt; k 即 元素数量小于需要分成的份数那么无法分成k份，所以返回0</li>
+<li>k &#x3D;&#x3D; 0 即 份数为0，所以返回0</li>
+<li>k &#x3D;&#x3D; 1 即 份数为1，即为原集合，返回1</li>
+<li>n &#x3D;&#x3D; k 即 n个元素分为k份，返回1 ( S1,S2,S3 … Sn )</li>
+<li>然后就是其他情况了<br>集合中的一个数Si被单独分为一个子集，那么除了Si这个数，其他n-1个数都被分到其他k-1个子集里，即 f(n - 1, k - 1)<br>集合中的一个数Si没有被单独分为一个子集，那先把它排除在外，其他n-1个数都被分到k个子集里了，即 f(n - 1, k)，现在再看Si这个数，它可以分到k个子集里的任意一个，而且都可以成为一种新的分法，即 f(n - 1, k) * k<br>所以其他情况返回 f(n - 1, k - 1) + f(n - 1, k) * k</li>
+</ul>
+</blockquote>
+<p>解题代码:</p>
+<pre><code class="c++">#include&lt;iostream&gt;
+using namespace std;
+long long int s(int n,int k)
+&#123;
+    if(n==k || k==1)
+    &#123;
+        return 1;
+    &#125;
+    else
+    &#123;
+        return k*s(n-1,k)+s(n-1,k-1);
+    &#125;
+&#125;
+int main()
+&#123;
+    int n,k;
+    cin&gt;&gt;n&gt;&gt;k;
+    long long int count=s(n,k);
+    cout&lt;&lt;count;
+    return 0;
+&#125;
+</code></pre>
+<hr>
+<h2 id="2-【例4-6】数的计数-Noip2001"><a href="#2-【例4-6】数的计数-Noip2001" class="headerlink" title="2.【例4.6】数的计数(Noip2001)"></a>2.【例4.6】数的计数(Noip2001)</h2><blockquote>
+<p><strong>【题目描述】<br>我们要求找出具有下列性质数的个数（包括输入的自然数n）。先输入一个自然数n(n≤1000)，然后对此自然数按照如下方法进行处理：<br>不作任何处理；<br>在它的左边加上一个自然数，但该自然数不能超过原数的一半；<br>加上数后，继续按此规则进行处理，直到不能再加自然数为止。<br>【输入】<br>自然数n(n≤1000)。<br>【输出】<br>满足条件的数。<br>【输入样例】<br>6<br>【输出样例】<br>6<br>【提示】<br>【样例解释】<br>满足条件的数为如下所示：<br>   6<br>  16<br>  26<br> 126<br>  36<br>136</strong></p>
+</blockquote>
+<blockquote>
+<p>【解题思路】<br>题目说白了就是 “把n个元素的数组分成k份，有多少种分法”<br><strong>递归</strong><br>分几种情况</p>
+<ul>
+<li>n &lt; k 即 元素数量小于需要分成的份数那么无法分成k份，所以返回0</li>
+<li>k &#x3D;&#x3D; 0 即 份数为0，所以返回0</li>
+<li>k &#x3D;&#x3D; 1 即 份数为1，即为原集合，返回1</li>
+<li>n &#x3D;&#x3D; k 即 n个元素分为k份，返回1 ( S1,S2,S3 … Sn )</li>
+<li>然后就是其他情况了<br> 集合中的一个数Si被单独分为一个子集，那么除了Si这个数，其他n-1个数都被分到其他k-1个子集里，即 f(n - 1, k - 1)<br>集合中的一个数Si没有被单独分为一个子集，那先把它排除在外，其他n-1个数都被分到k个子集里了，即 f(n - 1, k)，现在再看Si这个数，它可以分到k个子集里的任意一个，而且都可以成为一种新的分法，即 f(n - 1, k) * k<br>所以其他情况返回 f(n - 1, k - 1) + f(n - 1, k) * k</li>
+</ul>
+</blockquote>
+<p>解题代码：</p>
+<pre><code class="c++">#include&lt;iostream&gt;
+#include&lt;math.h&gt;
+using namespace std;
+int a[1010];
+int n;
+void f(int m)
+&#123;
+    if(a[m])
+    &#123;
+        return ;
+    &#125;
+    a[m]=1;
+    for(int i=1;i&lt;=m/2;i++)
+    &#123;
+        f(i);
+        a[m]+=a[i];
+    &#125;
+&#125;
+int main()
+&#123;
+    cin&gt;&gt;n;
+    f(n);
+    cout&lt;&lt;a[n]&lt;&lt;endl;
+    return 0;
+&#125;
+</code></pre>
+<hr>
+<h2 id="3-1198：逆波兰表达式"><a href="#3-1198：逆波兰表达式" class="headerlink" title="3.1198：逆波兰表达式"></a>3.1198：逆波兰表达式</h2><blockquote>
+<p><strong>【题目描述】</strong></p>
+<p><em><em>逆波兰表达式是一种把运算符前置的算术表达式，例如普通的表达式2 + 3的逆波兰表示法为+ 2 3。逆波兰表达式的优点是运算符之间不必有优先级关系，也不必用括号改变运算次序，例如(2 + 3) * 4的逆波兰表示法为</em> + 2 3 4。本题求解逆波兰表达式的值，其中运算符包括+ - * &#x2F;四个。</em>*</p>
+<p><strong>【输入】</strong></p>
+<p><strong>输入为一行，其中运算符和运算数之间都用空格分隔，运算数是浮点数。</strong></p>
+<p><strong>【输出】</strong></p>
+<p><strong>输出为一行，表达式的值。</strong></p>
+<p><strong>可直接用printf(“%f\n”, v)输出表达式的值v。</strong></p>
+<p><strong>【输入样例】</strong></p>
+<p>  *** + 11.0 12.0 + 24.0 35.0**</p>
+<p><strong>【输出样例】</strong></p>
+<p><strong>1357.000000</strong></p>
+</blockquote>
+<blockquote>
+<p>解题思路</p>
+<p>这题思路其实很简单，利用一个字符串接收字符时，每当接收到符号就进入下一级递归(类似于加个括号)，再进行下一个计算</p>
+</blockquote>
+<p>解题代码：</p>
+<pre><code class="c++">#include&lt;iostream&gt;
+#include&lt;stdio.h&gt;
+using namespace std;
+char s[10];
+double f()
+&#123;
+    scanf(&quot;%s&quot;,s);
+    if(s[0]==&#39;+&#39;) return f()+f();
+    else if(s[0]==&#39;-&#39;) return f()-f();
+    else if(s[0]==&#39;*&#39;) return f()*f();
+    else if(s[0]==&#39;/&#39;) return f()/f();
+    else return atof(&amp;s[0]);
+&#125;
+int main()
+&#123;
+    double v=f();
+    printf(&quot;%f\n&quot;, v);
+    return 0;
+&#125;
+</code></pre>
+<hr>
+<h2 id="4-1199：全排列"><a href="#4-1199：全排列" class="headerlink" title="4.1199：全排列"></a>4.1199：全排列</h2><blockquote>
+<h3 id="【题目描述】"><a href="#【题目描述】" class="headerlink" title="【题目描述】"></a>【题目描述】</h3><p>给定一个由不同的小写字母组成的字符串，输出这个字符串的所有全排列。</p>
+<p>我们假设对于小写字母有‘a’ &lt;‘b’ &lt; … &lt;‘y’&lt;‘z’，而且给定的字符串中的字母已经按照从小到大的顺序排列。</p>
+<p>【输入】</p>
+<p>只有一行，是一个由不同的小写字母组成的字符串，已知字符串的长度在1到6之间。</p>
+<p>【输出】</p>
+<p>输出这个字符串的所有排列方式，每行一个排列。要求字母序比较小的排列在前面。字母序如下定义：</p>
+<p>已知 <u>S&#x3D;s1s2…sk,T&#x3D;t1t2…tkS&#x3D;s1s2…sk,T&#x3D;t1t2…tk</u>，则S&lt;T等价于，存在p(1&lt;&#x3D;p&lt;&#x3D;k)，使得<u>s1&#x3D;t1,s2&#x3D;t2,…,sp−1&#x3D;tp−1,sp&lt;tps1&#x3D;t1,s2&#x3D;t2,…,sp−1&#x3D;tp−1,sp&lt;tp</u>成立。</p>
+<p>【输入样例】</p>
+<pre><code>abc
+</code></pre>
+<p>【输出样例】</p>
+<pre><code>abc acb bac bca cab cba 
+</code></pre>
+<p>【提示】</p>
+<p>本题目禁止使用STL及包含可以使用的相关调用。</p>
+</blockquote>
+<blockquote>
+<p>解题思路：与其说这题是递归题更准确来说其实是一道深搜题，思路很简单：</p>
+<ol>
+<li>设立一个字符串来接收输入数据，设立一个visit数组来模拟哈希表用于记录使用过的字符，设立一个ans数组来记录最终排列的字符串数组</li>
+<li>从第0个输入，在函数内会检测是否记录了最后一个字符，如果记录到了则直接输出结果，反之则从零开始寻找还没记录的字符，找到时便记录该字符，将该字符加入最终排列字符数组并开始下一个字符寻找函数，并在该函数结束时将该字符的记录还原，表示这个字符不用了</li>
+<li>最后结束代码</li>
+</ol>
+</blockquote>
+<p>解题代码：</p>
+<pre><code class="c++">#include&lt;iostream&gt;
+using namespace std;
+string s;
+int n;
+int v[10];
+char ans[100];
+void printfs(int n)
+&#123;
+    for(int i=0;i&lt;n;i++)
+    &#123;
+        cout&lt;&lt;ans[i];
+    &#125;
+    cout&lt;&lt;endl;
+&#125;
+void f(int p)
+&#123;
+    if(p==n)  printfs(n);
+    else
+    &#123;
+        for(int i=0;i&lt;n;i++)
+        &#123;
+            if(v[i]==0)
+            &#123;
+                v[i]=1;
+                ans[p]=s[i];
+                f(p+1);
+                v[i]=0;
+            &#125;
+        &#125;
+    &#125;
+&#125;
+int main()
+&#123;
+    cin&gt;&gt;s;
+    n=s.length();
+    f(0);
+    return 0;
+&#125;
+</code></pre>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+            <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2024 SWe1L
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;Mr-SW
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+        
+        <transition name="fade">
+            <div id="preview" ref="preview" v-show="previewShow">
+                <img id="preview-content" ref="previewContent" />
+            </div>
+        </transition>
+        
+    </div>
+    <script src="/js/main.js"></script>
+    
+    
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Mr-sww/Mr-sww.github.io"
+    data-repo-id="R_kgDONRqd4g"
+    data-category="Announcements"
+    data-category-id="DIC_kwDONRqd4s4CkjmB"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
+    
+    <canvas
+    id="fireworks"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 32767"
+></canvas>
+<script src="https://s4.zstatic.net/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<script src="/js/fireworks.min.js"></script>
+<canvas
+    id="background"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1"
+></canvas>
+<script src="/js/background.min.js"></script>
+<div id="cursor"></div>
+<link rel="stylesheet" href="/css/cursor.min.css" />
+<script src="/js/cursor.min.js"></script>
+</body>
+</html>
