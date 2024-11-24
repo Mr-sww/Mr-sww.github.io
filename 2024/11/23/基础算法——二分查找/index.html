@@ -175,14 +175,14 @@
             
             <span class="tag">
                 
-                <a href="/tags/%E9%98%BF%E4%BC%9F/" style="color: #00a596">
+                <a href="/tags/%E9%98%BF%E4%BC%9F/" style="color: #03a9f4">
                     阿伟
                 </a>
             </span>
             
             <span class="tag">
                 
-                <a href="/tags/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/" style="color: #03a9f4">
+                <a href="/tags/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/" style="color: #00bcd4">
                     基础算法
                 </a>
             </span>
@@ -198,7 +198,8 @@
 <p><strong>给定一个按照升序排列的长度为 n的整数数组，以及 q个查询。<br>对于每个查询，返回一个元素 k的起始位置和终止位置（位置从 0开始计数）。<br>如果数组中不存在该元素，则返回 -1 -1。<br>输入格式<br>第一行包含整数 n和 q，表示数组长度和询问个数。<br>第二行包含 n个整数（均在 1∼10000范围内），表示完整数组。<br>接下来 q行，每行包含一个整数 k，表示一个询问元素。<br>输出格式共 q行，每行包含两个整数，表示所求元素的起始位置和终止位置。<br>如果数组中不存在该元素，则返回 -1 -1。<br>数据范围<br>1≤n≤100000<br>1≤q≤10000<br>1≤k≤10000<br>输入样例：<br>6 3<br>1 2 2 3 3 4<br>3<br>4<br>5<br>输出样例：<br>3 4<br>5 5<br>-1 -1</strong></p>
 </blockquote>
 <blockquote>
-<p>解题思路：<br><img src="D:\MyBlog\source_posts\images\二分】.png" alt="二分】"></p>
+<p>解题思路：</p>
+<p><a href="<file>" download>D:\MyBlog\source_posts\images\二分】.png</a></p>
 <p>只需要将查询元素与数组中间元素进行比较，<br>case 1: 查询元素等于中间元素，则直接返回下标。<br>case 2: 查询元素大于中间元素，则递归调用函数，查找右半边。<br>case 3: 查询元素小于中间元素，则递归调用函数，查找左半边。<br>然后向前和向后寻找，即可得到起始位置和终止位置。<br>解题代码：</p>
 </blockquote>
 <pre><code class="cpp">#include&lt;iostream&gt;
