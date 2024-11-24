@@ -175,7 +175,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/%E9%98%BF%E4%BC%9F/" style="color: #03a9f4">
+                <a href="/tags/%E9%98%BF%E4%BC%9F/" style="color: #00a596">
                     阿伟
                 </a>
             </span>
@@ -215,7 +215,7 @@
 <blockquote>
 <p> 解题思路：</p>
 <p> 这是一道很简单的DFS入门题</p>
-<p> xxxxxxxxxx #include <iostream>using namespace std;int l,r,c;long long int n,m,sum;long long int arr[100010];long long int b[100010];void insert(int l,int r,int c){    b[l]+&#x3D;c;    b[r+1]-&#x3D;c;}int main(){    scanf(“%ld%ld”,&amp;n,&amp;m);    for(int i&#x3D;1;i&lt;&#x3D;n;i++)    {        scanf(“%ld”,&amp;arr[i]);        insert(i,i,arr[i]);    }    for(int i&#x3D;1;i&lt;&#x3D;m;i++)    {        scanf(“%d%d%d”,&amp;l,&amp;r,&amp;c);        insert(l,r,c);    }    for(int i&#x3D;1;i&lt;&#x3D;n;i++)    {        b[i]+&#x3D;b[i-1];    }    for(int i&#x3D;1;i&lt;&#x3D;n;i++)    {        printf(“%ld “,b[i]);    }}cpp</p>
+<p> 根据题意，你只需要从入口进入dfs函数，判断点是否能够走周围点并且实时更新经过的点即可，要注意的是每走一个点都需要判断是否要更新最多走过的情况</p>
 </blockquote>
 <p>解题代码：</p>
 <pre><code class="c++">#include&lt;iostream&gt;
@@ -498,7 +498,7 @@ int main() &#123;
     return 0;
 &#125;   
 </code></pre>
-<p><img src="C:\Users\SW\AppData\Roaming\Typora\typora-user-images\image-20241121200830360.png" alt="image-20241121200830360"></p>
+<p><img src="D:\MyBlog\source_posts\images\image-20241121200830360.png" alt="image-20241121200830360"></p>
 <p>算法2<br>（DFS按每个元素枚举）时间复杂度O(2的n²次方)</p>
 <p>时间复杂度分析：每个位置都有两种情况，总共有 n²个位置</p>
 <pre><code class="c++">#include &lt;iostream&gt;
