@@ -175,14 +175,14 @@
             
             <span class="tag">
                 
-                <a href="/tags/%E9%98%BF%E4%BC%9F/" style="color: #00a596">
+                <a href="/tags/%E9%98%BF%E4%BC%9F/" style="color: #ff7d73">
                     阿伟
                 </a>
             </span>
             
             <span class="tag">
                 
-                <a href="/tags/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/" style="color: #ff7d73">
+                <a href="/tags/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/" style="color: #00a596">
                     基础算法
                 </a>
             </span>
@@ -935,6 +935,117 @@ int main()
 &#125;
 </code></pre>
 <hr>
+<h1 id="广搜"><a href="#广搜" class="headerlink" title="广搜"></a>广搜</h1><h2 id="分支限界法"><a href="#分支限界法" class="headerlink" title="分支限界法"></a>分支限界法</h2><blockquote>
+<p>简介:分支限界法类似于回溯法，也是一种在问题的解空间树T中搜索问题解的算法。</p>
+<p>但在一般情况下，分枝限界法与回溯法的求解目标不同。回溯法的求解目标是找出解空间树中满足约束条件的所有解，而分枝限界法的求解目标则是找出满足约束条件的一个解，或是在满足约束条件的解中找出使某一目标函数值达到极大或极小的解，即在某种意义下的最优解。</p>
+<p>所谓“分枝”就是采用广度优先的策略，依次搜索活节点的所有分枝，也就是所有相邻结点，再找到这一层分枝的最优解作为这一层的活节点进行下一层搜索</p>
+</blockquote>
+<h3 id="1-马走日"><a href="#1-马走日" class="headerlink" title="1. 马走日"></a>1. 马走日</h3><blockquote>
+<p>【题目描述】</p>
+<p>输入n代表有个n×n的棋盘，输入开始位置的坐标和结束位置的坐标，问一个骑士朝棋盘的八个方向走马字步，从开始坐标到结束坐标可以经过多少步，要求用分支限界法求解。</p>
+<p><img src="https://p.ananas.chaoxing.com/star3/origin/682b429749f0d5cdc6a559da546738d1.png" alt="img"></p>
+<p>【输入】首先输入一个n,表示测试样例的个数。</p>
+<p>每个测试样例有三行。</p>
+<p>第一行是棋盘的大小L(4≤L≤300)；</p>
+<p>第二行和第三行分别表示马的起始位置和目标位置(0..L−1)。</p>
+<p>【输出】</p>
+<p>马移动的最小步数，起始位置和目标位置相同时输出0。</p>
+<p>【输入样例】</p>
+<p>3</p>
+<p>8</p>
+<p>0 0</p>
+<p>7 0</p>
+<p>100</p>
+<p>0 0</p>
+<p>30 50</p>
+<p>10</p>
+<p>1 1</p>
+<p>1 1</p>
+<p>【输出样例】</p>
+<p>5280</p>
+</blockquote>
+<p>解题思路:</p>
+<blockquote>
+<p>作为一道简单的搜索题，题目要求使用分支限界法找出最大路径，思路如下：</p>
+<ul>
+<li>使用优先队列存储数据并使步数越小优先级越高</li>
+<li>从起点开始进行广度搜索</li>
+<li>在每一层的搜索中提取队列的最小步数的节点，将他的没有越界的子节点加入队列</li>
+<li>循环这个操作直到最小步数的子节点到达目标节点</li>
+</ul>
+</blockquote>
+<p>解题代码:</p>
+<pre><code class="c++">#include&lt;iostream&gt;
+#include&lt;queue&gt;
+#include&lt;cstring&gt;
+#include&lt;vector&gt;
+using namespace std;
+int n;
+int T;
+int X0,Y0;//起始位置
+int X,Y;//目标位置
+typedef struct node
+&#123;
+    int X;
+    int Y;
+    int step;
+    bool operator&lt;(const node&amp; a) const &#123;
+        return step &lt; a.step;
+    &#125;
+    bool operator&gt;(const node&amp; a) const &#123;
+        return step &gt; a.step;
+    &#125;
+&#125;node;
+
+int dX[]=&#123;2,1,-1,-2,-2,-1,1,2&#125;;
+int dY[]=&#123;1,2,2,1,-1,-2,-2,-1&#125;;
+int visit[310][310];
+int bfs()
+&#123;
+    priority_queue&lt;node, vector&lt;node&gt;, greater&lt;node&gt;&gt; q;
+    q.push(&#123;X0,Y0,0&#125;);
+    visit[X0][Y0]=1;
+    while(!q.empty())
+    &#123;
+        node t=q.top();
+        q.pop();
+        for(int i=0;i&lt;8;i++)
+        &#123;
+            int xx=t.X+dX[i];
+            int yy=t.Y+dY[i];
+            if(xx==X&amp;&amp;yy==Y)
+            &#123;
+                return t.step+1;
+            &#125;
+            if(xx&gt;=0&amp;&amp;yy&gt;=0&amp;&amp;xx&lt;n&amp;&amp;yy&lt;n&amp;&amp;visit[xx][yy]==0)
+            &#123;
+                visit[xx][yy]=1;
+                q.push(&#123;xx,yy,t.step+1&#125;);
+            &#125;
+        &#125;
+    &#125;
+    return -1;
+&#125;
+int main()
+&#123;
+    scanf(&quot;%d&quot;,&amp;T);
+    for(int i=0;i&lt;T;i++)
+    &#123;
+        scanf(&quot;%d&quot;,&amp;n);
+        scanf(&quot;%d%d%d%d&quot;,&amp;X0,&amp;Y0,&amp;X,&amp;Y);
+        memset(visit, 0, sizeof(visit));
+        if(X0==X&amp;&amp;Y0==Y)
+        &#123;
+            printf(&quot;0\n&quot;);
+        &#125;
+        else
+        &#123;
+            printf(&quot;%d\n&quot;,bfs());
+        &#125;
+    &#125;
+    return 0;
+&#125;
+</code></pre>
 
     </div>
     
