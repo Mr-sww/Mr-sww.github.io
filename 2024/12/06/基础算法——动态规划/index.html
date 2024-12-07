@@ -175,14 +175,14 @@
             
             <span class="tag">
                 
-                <a href="/tags/%E9%98%BF%E4%BC%9F/" style="color: #03a9f4">
+                <a href="/tags/%E9%98%BF%E4%BC%9F/" style="color: #ffa2c4">
                     阿伟
                 </a>
             </span>
             
             <span class="tag">
                 
-                <a href="/tags/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/" style="color: #ffa2c4">
+                <a href="/tags/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/" style="color: #ff7d73">
                     基础算法
                 </a>
             </span>
@@ -326,7 +326,7 @@ int main()
 <blockquote>
 <p>我们用<code>dp[i][j]</code>来表示从i到j的最少代价情况，不难想出，当最后一次合并是左右两个情况一定是各自的最佳情况，推广的所有不难发现所有合成的情况都应该是最佳情况</p>
 <p>那么对于i到j的合并情况来说：(借用下闫总画的图)</p>
-<p><img src="https://pic.imgdb.cn/item/6753f819d0e0a243d4df4208.png" alt="image-20241207151600312"></p>
+<p><img src="https://pic.imgdb.cn/item/6753f819d0e0a243d4df4208.png" alt="区间dp.png"></p>
 <p>也就是在i到j中利用移动的k指针将总情况分割成两种不同情况，找到所有情况中最佳的情况，而且不难看出，当最后一次合并时产生的总代价其实就是i到j中所有石子的代价和，也就是</p>
 <p><code>dp[i][j]=dp(f[i][j],f[i][k]+f[k+1][j]+s[j]-s[i-1])</code></p>
 </blockquote>
